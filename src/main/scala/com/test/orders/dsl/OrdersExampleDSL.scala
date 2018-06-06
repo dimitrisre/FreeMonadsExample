@@ -1,9 +1,8 @@
-package com.test.orders
+package com.test.orders.dsl
 
 import cats.free.Free
 import cats.free.Free._
 import cats.implicits._
-import cats.syntax.traverse._
 
 import scala.util.Either
 

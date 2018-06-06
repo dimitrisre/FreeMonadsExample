@@ -1,8 +1,8 @@
 package com.test.orders
 
-import com.test.orders.OrdersExampleDSL.{smartTraide,smartTraideWithList}
-import com.test.orders.OrdersIdExampleInterpreter.orderPrinter
-import com.test.orders.OrdersErrorsExampleInterpreter.etheirInterpreter
+import com.test.orders.dsl.OrdersExampleDSL.{smartTraide,smartTraideWithList}
+import com.test.orders.interpreters.OrdersIdExampleInterpreter.orderPrinter
+import com.test.orders.interpreters.OrdersErrorsExampleInterpreter.etheirInterpreter
 import cats.implicits._
 
 object Main {

@@ -1,8 +1,9 @@
-package com.test.orders
+package com.test.orders.interpreters
 
 import cats.~>
-import com.test.orders.OrdersExampleDSL.{Buy, ErrorOr, Orders, Sell}
-import scala.util.{Either, Right, Left}
+import com.test.orders.dsl.OrdersExampleDSL._
+
+import scala.util.Left
 
 object OrdersErrorsExampleInterpreter {
   def etheirInterpreter: Orders ~> ErrorOr =

@@ -1,7 +1,7 @@
-package com.test.orders
+package com.test.orders.interpreters
 
 import cats.{Id, ~>}
-import com.test.orders.OrdersExampleDSL.{Buy, ListStocks, Orders, Sell}
+import com.test.orders.dsl.OrdersExampleDSL.{Buy, ListStocks, Orders, Sell}
 
 object OrdersIdExampleInterpreter {
   def orderPrinter: Orders ~> Id =
