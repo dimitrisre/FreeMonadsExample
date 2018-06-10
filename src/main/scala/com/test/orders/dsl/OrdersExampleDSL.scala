@@ -33,8 +33,8 @@ object OrdersExampleDSL {
   def smartTraide: OrdersF[Response] = for{
     _ <- buy("APPL", 50)
     _ <- buy("MSFT", 100)
-    _ <- sell("GOOG", 40)
     rsp <- buy("GOOG3", 41)
+    _ <- sell("GOOG", 40)
   } yield rsp
 
   def smartTraideWithList: Free[Orders, String] = for{
