@@ -34,13 +34,13 @@ object OrdersExampleDSL {
   def sell(stock: Symbol, amount: Int): OrdersF[Response] =
     liftF[Orders, Response](Sell(stock, amount))
 
-  class OrderI[F[_]](implicit I: Inject[Orders[_], F[_]]){
+  class OrderI[F[_]](implicit I: InjectK[Orders, F]){
     def buyI(stock: Symbol, amount: Int): Free[F, Response] = Free.inject[Orders, F](Buy(stock, amount))
 
     def sellI(stock: Symbol, amount: Int): Free[F, Response] = Free.inject[Orders, F](Sell(stock, amount))
   }
 
-  implicit def orderI[F[_]](implicit I: Inject[Orders[_], F[_]]): OrderI[F] = new OrderI[F]
+  implicit def orderI[F[_]](implicit I: InjectK[Orders, F]): OrderI[F] = new OrderI[F]
 
   def smartTraide: OrdersF[Response] = for{
     _ <- buy("APPL", 50)

@@ -19,14 +19,14 @@ object LogsDSL {
 
   case class Error(msg: String) extends Log[Unit]
 
-  class LogI[F[_]](implicit I: Inject[Log[_], F[_]]){
+  class LogI[F[_]](implicit I: InjectK[Log, F]){
 
     def infoI(msg: String): Free[F, Unit] = Free.inject[Log, F](Info(msg))
 
     def errorI(msg: String): Free[F, Unit] = Free.inject[Log, F](Error(msg))
   }
 
-  implicit def logI[F[_]](implicit I: Inject[Log[_], F[_]]): LogI[F] = new LogI[F]
+  implicit def logI[F[_]](implicit I: InjectK[Log, F]): LogI[F] = new LogI[F]
 
 
   def smartTradeWithLogs(implicit O: OrderI[TradeApp],
