@@ -1,36 +1,39 @@
 package com.test.orders.dsl
 
-import cats.free.Free
-import cats.implicits._
-import cats.{Id, Inject, ~>}
-import com.test.orders.dsl.OrdersExampleDSL.{OrderI, Orders, Response}
 import scalaz.Coproduct
+import cats._
+import cats.data._
+import cats.free.Free._
+import cats.free.Free
+import cats.{Id, Inject, ~>}
+import cats.implicits._
+
+import com.test.orders.dsl.OrdersExampleDSL.{OrderI, Orders, Response}
 
 object LogsDSL {
-  sealed trait Log[A]
+  trait Log[A]
+
+  type TradeApp[A] = Coproduct[Orders, Log, A]
 
   case class Info(msg: String) extends Log[Unit]
 
   case class Error(msg: String) extends Log[Unit]
 
-  class LogI[F[_]](implicit I: Inject[Log, F]){
-    def infoI(msg: String): Free[F, Unit] =
-      Free.inject[Log, F](Info(msg))
+  class LogI[F[_]](implicit I: Inject[Log[_], F[_]]){
 
-    def errorI(msg: String): Free[F, Unit] =
-      Free.inject[Log, F](Error(msg))
+    def infoI(msg: String): Free[F, Unit] = Free.inject[Log, F](Info(msg))
+
+    def errorI(msg: String): Free[F, Unit] = Free.inject[Log, F](Error(msg))
   }
 
-  implicit def logI[F[_]](implicit I: Inject[Log, F]): LogI[F] = new LogI[F]
+  implicit def logI[F[_]](implicit I: Inject[Log[_], F[_]]): LogI[F] = new LogI[F]
 
-  type TradeApp[A] = Coproduct[Orders, Log, A]
 
-  def smartTradeWithLogs(implicit OR: OrderI[TradeApp],
-                         LG: LogI[TradeApp]
-  ): Free[TradeApp, Response] = {
+  def smartTradeWithLogs(implicit O: OrderI[TradeApp],
+                         I: LogI[TradeApp]): Free[TradeApp, Response] = {
 
-    import LG._
-    import OR._
+    import O._
+    import I._
 
     for{
       _ <- infoI("I am going to trade smartly")

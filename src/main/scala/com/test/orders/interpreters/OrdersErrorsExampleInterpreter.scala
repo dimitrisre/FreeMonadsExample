@@ -12,7 +12,10 @@ object OrdersErrorsExampleInterpreter {
         case Buy(stock, amount) =>
           Right(s"""$stock - $amount""")
         case Sell(stock, amount) =>
-          Left(s"""Why are you selling that? $stock""")
+          Left(
+            s"""Why are you selling that? $stock --- $amount
+               |
+             """.stripMargin)
       }
     }
 }

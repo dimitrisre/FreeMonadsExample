@@ -6,7 +6,7 @@ import com.test.orders.interpreters.OrdersErrorsExampleInterpreter.etheirInterpr
 import cats.implicits._
 
 object Main {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     smartTraide.foldMap(orderPrinter)
     smartTraideWithList.foldMap(orderPrinter)
 

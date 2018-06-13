@@ -1,9 +1,12 @@
 package com.test.orders.dsl
 
-import cats.Inject
-import cats.free.Free
+import cats._
+import cats.data._
 import cats.free.Free._
+import cats.free.Free
+import cats.free._
 import cats.implicits._
+import cats.{Id, Inject, ~>}
 
 import scala.util.Either
 
@@ -31,13 +34,13 @@ object OrdersExampleDSL {
   def sell(stock: Symbol, amount: Int): OrdersF[Response] =
     liftF[Orders, Response](Sell(stock, amount))
 
-  class OrderI[F[_]](implicit I: Inject[Orders[_], F]){
+  class OrderI[F[_]](implicit I: Inject[Orders[_], F[_]]){
     def buyI(stock: Symbol, amount: Int): Free[F, Response] = Free.inject[Orders, F](Buy(stock, amount))
 
     def sellI(stock: Symbol, amount: Int): Free[F, Response] = Free.inject[Orders, F](Sell(stock, amount))
   }
 
-  implicit def orderI[F[_]](implicit I: Inject[Orders[_], F]): OrderI[F] = new OrderI[F]
+  implicit def orderI[F[_]](implicit I: Inject[Orders[_], F[_]]): OrderI[F] = new OrderI[F]
 
   def smartTraide: OrdersF[Response] = for{
     _ <- buy("APPL", 50)
