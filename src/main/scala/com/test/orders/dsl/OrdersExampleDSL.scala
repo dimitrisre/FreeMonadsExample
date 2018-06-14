@@ -7,6 +7,7 @@ import cats.free.Free
 import cats.free._
 import cats.implicits._
 import cats.{Id, Inject, ~>}
+import com.test.orders.dsl.LogsDSL.TradeApp
 
 import scala.util.Either
 

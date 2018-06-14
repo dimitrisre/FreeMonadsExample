@@ -13,7 +13,7 @@ import com.test.orders.dsl.OrdersExampleDSL.{OrderI, Orders, Response}
 object LogsDSL {
   trait Log[A]
 
-  type TradeApp[A] = Coproduct[Orders, Log, A]
+  type TradeApp[A] = EitherK[Orders, Log, A]
 
   case class Info(msg: String) extends Log[Unit]
 

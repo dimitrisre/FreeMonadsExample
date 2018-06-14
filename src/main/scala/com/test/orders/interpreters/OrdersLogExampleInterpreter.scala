@@ -2,6 +2,9 @@ package com.test.orders.interpreters
 
 import cats.{Id, ~>}
 import com.test.orders.dsl.LogsDSL._
+import com.test.orders.interpreters.OrdersIdExampleInterpreter.orderPrinter
+import cats.data
+import cats.implicits._
 
 object OrdersLogExampleInterpreter {
   def logPrinter: Log ~> Id =
@@ -14,4 +17,7 @@ object OrdersLogExampleInterpreter {
             println(s"""[Error] - $msg""")
         }
     }
+
+
+  def composedInterpreter: TradeApp ~> Id = orderPrinter or logPrinter
 }
